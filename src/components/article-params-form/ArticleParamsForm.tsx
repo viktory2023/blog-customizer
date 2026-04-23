@@ -95,58 +95,54 @@ export const ArticleParamsForm = ({
 			<aside
 				className={clsx(styles.container, {
 					[styles.container_open]: isSidebarOpen,
-				})}
-			>
+				})}>
 				<form
 					className={styles.form}
 					onSubmit={handleSubmit}
-					onReset={handleReset}
-				>
+					onReset={handleReset}>
 					<Text as='h2' size={31} weight={800} uppercase>
 						Задайте параметры
 					</Text>
 
-					<div className={styles.formContent}>
-						<Select
-							title='Шрифт'
-							selected={formState.fontFamilyOption}
-							options={fontFamilyOptions}
-							onChange={handleFontFamilyChange}
-						/>
+					<Select
+						title='Шрифт'
+						selected={formState.fontFamilyOption}
+						options={fontFamilyOptions}
+						onChange={handleFontFamilyChange}
+					/>
 
-						<RadioGroup
-							title='Размер шрифта'
-							name='fontSize'
-							selected={formState.fontSizeOption}
-							options={fontSizeOptions}
-							onChange={handleFontSizeChange}
-						/>
+					<RadioGroup
+						title='Размер шрифта'
+						name='fontSize'
+						selected={formState.fontSizeOption}
+						options={fontSizeOptions}
+						onChange={handleFontSizeChange}
+					/>
 
-						<Select
-							title='Цвет шрифта'
-							selected={formState.fontColor}
-							options={fontColors}
-							onChange={handleFontColorChange}
-						/>
+					<Select
+						title='Цвет шрифта'
+						selected={formState.fontColor}
+						options={fontColors}
+						onChange={handleFontColorChange}
+					/>
 
-						<div className={styles.separator}>
-							<Separator />
-						</div>
-
-						<Select
-							title='Цвет фона'
-							selected={formState.backgroundColor}
-							options={backgroundColors}
-							onChange={handleBackgroundColorChange}
-						/>
-
-						<Select
-							title='Ширина контента'
-							selected={formState.contentWidth}
-							options={contentWidthArr}
-							onChange={handleContentWidthChange}
-						/>
+					<div className={styles.separator}>
+						<Separator />
 					</div>
+
+					<Select
+						title='Цвет фона'
+						selected={formState.backgroundColor}
+						options={backgroundColors}
+						onChange={handleBackgroundColorChange}
+					/>
+
+					<Select
+						title='Ширина контента'
+						selected={formState.contentWidth}
+						options={contentWidthArr}
+						onChange={handleContentWidthChange}
+					/>
 
 					<div className={styles.bottomContainer}>
 						<Button title='Сбросить' htmlType='reset' type='clear' />
