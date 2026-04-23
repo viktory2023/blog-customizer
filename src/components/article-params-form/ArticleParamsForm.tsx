@@ -7,6 +7,7 @@ import { Select } from 'src/ui/select';
 import { RadioGroup } from 'src/ui/radio-group';
 import { Separator } from 'src/ui/separator';
 import { Text } from 'src/ui/text';
+
 import {
 	ArticleStateType,
 	backgroundColors,
@@ -29,26 +30,20 @@ export const ArticleParamsForm = ({
 	appliedState,
 	onApply,
 }: ArticleParamsFormProps) => {
-	const [isOpen, setIsOpen] = useState(false);
+	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
 	const [formState, setFormState] = useState(appliedState);
-	const rootRef = useRef<HTMLDivElement>(null);
+
+	const sidebarRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
-		setFormState(appliedState);
-	}, [appliedState]);
-
-	useEffect(() => {
-		if (!isOpen) {
-			return;
-		}
+		if (!isSidebarOpen) return;
 
 		const handleClickOutside = (event: MouseEvent) => {
-			if (!(event.target instanceof Node)) {
-				return;
-			}
+			if (!(event.target instanceof Node)) return;
 
-			if (!rootRef.current?.contains(event.target)) {
-				setIsOpen(false);
+			if (!sidebarRef.current?.contains(event.target)) {
+				setIsSidebarOpen(false);
 			}
 		};
 
@@ -57,30 +52,30 @@ export const ArticleParamsForm = ({
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside);
 		};
-	}, [isOpen]);
+	}, [isSidebarOpen]);
 
-	const toggleForm = () => {
-		setIsOpen((prevState) => !prevState);
+	const toggleSidebar = () => {
+		setIsSidebarOpen((prev) => !prev);
 	};
 
 	const handleFontFamilyChange = (option: OptionType) => {
-		setFormState((prevState) => ({ ...prevState, fontFamilyOption: option }));
+		setFormState((prev) => ({ ...prev, fontFamilyOption: option }));
 	};
 
 	const handleFontSizeChange = (option: OptionType) => {
-		setFormState((prevState) => ({ ...prevState, fontSizeOption: option }));
+		setFormState((prev) => ({ ...prev, fontSizeOption: option }));
 	};
 
 	const handleFontColorChange = (option: OptionType) => {
-		setFormState((prevState) => ({ ...prevState, fontColor: option }));
+		setFormState((prev) => ({ ...prev, fontColor: option }));
 	};
 
 	const handleBackgroundColorChange = (option: OptionType) => {
-		setFormState((prevState) => ({ ...prevState, backgroundColor: option }));
+		setFormState((prev) => ({ ...prev, backgroundColor: option }));
 	};
 
 	const handleContentWidthChange = (option: OptionType) => {
-		setFormState((prevState) => ({ ...prevState, contentWidth: option }));
+		setFormState((prev) => ({ ...prev, contentWidth: option }));
 	};
 
 	const handleReset = () => {
@@ -94,19 +89,23 @@ export const ArticleParamsForm = ({
 	};
 
 	return (
-		<div ref={rootRef}>
-			<ArrowButton isOpen={isOpen} onClick={toggleForm} />
+		<div ref={sidebarRef}>
+			<ArrowButton isOpen={isSidebarOpen} onClick={toggleSidebar} />
+
 			<aside
 				className={clsx(styles.container, {
-					[styles.container_open]: isOpen,
-				})}>
+					[styles.container_open]: isSidebarOpen,
+				})}
+			>
 				<form
 					className={styles.form}
 					onSubmit={handleSubmit}
-					onReset={handleReset}>
+					onReset={handleReset}
+				>
 					<Text as='h2' size={31} weight={800} uppercase>
 						Задайте параметры
 					</Text>
+
 					<div className={styles.formContent}>
 						<Select
 							title='Шрифт'
@@ -114,28 +113,33 @@ export const ArticleParamsForm = ({
 							options={fontFamilyOptions}
 							onChange={handleFontFamilyChange}
 						/>
+
 						<RadioGroup
 							title='Размер шрифта'
-							name='font-size'
+							name='fontSize'
 							selected={formState.fontSizeOption}
 							options={fontSizeOptions}
 							onChange={handleFontSizeChange}
 						/>
+
 						<Select
 							title='Цвет шрифта'
 							selected={formState.fontColor}
 							options={fontColors}
 							onChange={handleFontColorChange}
 						/>
+
 						<div className={styles.separator}>
 							<Separator />
 						</div>
+
 						<Select
 							title='Цвет фона'
 							selected={formState.backgroundColor}
 							options={backgroundColors}
 							onChange={handleBackgroundColorChange}
 						/>
+
 						<Select
 							title='Ширина контента'
 							selected={formState.contentWidth}
@@ -143,6 +147,7 @@ export const ArticleParamsForm = ({
 							onChange={handleContentWidthChange}
 						/>
 					</div>
+
 					<div className={styles.bottomContainer}>
 						<Button title='Сбросить' htmlType='reset' type='clear' />
 						<Button title='Применить' htmlType='submit' type='apply' />
